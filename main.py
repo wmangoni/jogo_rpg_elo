@@ -2,7 +2,7 @@ import random
 
 
 # Função para sacar cartas
-def sacar_cartas(classificacao, caracteristicas, baralho, cemiterio):
+def sacar_cartas(classificacao, caracteristicas, baralho, cemiterio, jogador):
 
   if (len(baralho) < 1):
     baralho = cemiterio
@@ -10,8 +10,14 @@ def sacar_cartas(classificacao, caracteristicas, baralho, cemiterio):
 
   mao = []
   # Reduz a classificação se uma característica se encaixa
-  if any(caracteristica in classificacao for caracteristica in caracteristicas):
-    classificacao = list(classificacoes.keys())[list(classificacoes.values()).index(classificacao) - 1]
+  if any(caracteristica in jogador["caracteristicas"] for caracteristica in caracteristicas):
+    if classificacao == "logica":
+      classificacao = "trivial"
+    elif classificacao == "ilogica":
+      classificacao = "logica"
+    elif classificacao == "impossivel":
+      classificacao = "ilogica"
+
   # Sacar cartas de acordo com a classificação
   for _ in range(classificacoes[classificacao]):
     carta_sacada = random.choice(baralho)
@@ -52,9 +58,9 @@ def verificar_cartas_especiais(cartas):
       return True
   return False
 
-def jogar(pergunta, classificacao, caracteristicas, baralho, cemiterio):
+def jogar(pergunta, classificacao, caracteristicas, baralho, cemiterio, jogador):
   # Sacar cartas
-  cartas, baralho, cemiterio = sacar_cartas(classificacao, caracteristicas, baralho, cemiterio)
+  cartas, baralho, cemiterio = sacar_cartas(classificacao, caracteristicas, baralho, cemiterio, jogador)
 
   print(f"mao_jogador: {cartas}")
 
@@ -82,6 +88,14 @@ def jogar(pergunta, classificacao, caracteristicas, baralho, cemiterio):
 # Função principal
 def main():
 
+  jogador = {
+      "nome": "Joãozinho",
+      "idade": 25,
+      "sexo": "Masculino",
+      "vida": 40,
+      "caracteristicas": ["Atento", "Forte"]
+  }
+
   # Dicionário de classificações e quantidades de cartas
   classificacoes = {
       "trivial": 0,
@@ -99,9 +113,9 @@ def main():
 
   CARTAS_SACADAS = []
 
-  CARTAS, CARTAS_SACADAS = jogar("Há algo útil dentro do carro?", "ilogica", ["Atento"], CARTAS, CARTAS_SACADAS)
-  CARTAS, CARTAS_SACADAS = jogar("Tem comida dentro do armário?", "logica", ["Esperto"], CARTAS, CARTAS_SACADAS)
-  CARTAS, CARTAS_SACADAS = jogar("Tem uma arma dentro da caixa?", "impossivel", ["Forte"], CARTAS, CARTAS_SACADAS)
+  CARTAS, CARTAS_SACADAS = jogar("Há algo útil dentro do carro?", "ilogica", ["Atento"], CARTAS, CARTAS_SACADAS, jogador)
+  CARTAS, CARTAS_SACADAS = jogar("Tem comida dentro do armário?", "logica", ["Esperto"], CARTAS, CARTAS_SACADAS, jogador)
+  CARTAS, CARTAS_SACADAS = jogar("Tem uma arma dentro da caixa?", "impossivel", ["Forte"], CARTAS, CARTAS_SACADAS, jogador)
 
   print()
   print("#### ESTADO JOGO ####")
