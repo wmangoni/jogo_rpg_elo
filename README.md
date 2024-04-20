@@ -1,6 +1,6 @@
 # Simulador de Jogo de RPG de Cartas
 
-Este é um simulador de jogo de cartas que implementa as regras fornecidas. O simulador é escrito em Python e permite simular várias situações com base em classificações, características e cartas selecionadas.
+Este é um simulador de jogo de cartas. O simulador é escrito em Python e permite simular várias situações com base em classificações, características e cartas selecionadas.
 
 ## Requisitos
 
